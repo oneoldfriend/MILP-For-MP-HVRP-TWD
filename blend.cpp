@@ -5,7 +5,7 @@
 #include <math.h>
 
 #define M 100000
-#define RUNNING_HOURS 10
+#define RUNNING_HOURS 2
 
 ILOSTLBEGIN
 
@@ -23,12 +23,12 @@ ILOMIPINFOCALLBACK4(timeIntervalCallback,
 {
     int better_flag = 0;
     IloNum time_elapsed = cplex.getCplexTime() - start_time;
-    if (time_elapsed > 20)
+    if (time_elapsed / 3600 > RUNNING_HOURS)
     {
-        if (hasIncumbent())
-        {
-            fp << instance_name << "," << getIncumbentObjValue() << endl;
-        }
+        // if (hasIncumbent())
+        // {
+        //     fp << instance_name << "," << getIncumbentObjValue() << endl;
+        // }
         abort();
     }
 }
@@ -445,10 +445,11 @@ int main(int argc, char **argv)
         // CallBack
         cplex.use(timeIntervalCallback(env, cplex, file, cplex.getCplexTime(), instance_name));
         cplex.solve();
-        cplex.exportModel("best_route.lp");
+        // cplex.exportModel("best_route.lp");
         env.out() << "Solution status = " << cplex.getStatus() << endl;
         env.out() << "Solution value  = " << cplex.getObjValue() << endl;
         file << instance_name << "," << -cplex.getObjValue() << std::endl;
+        file.close();
         // display the value of variable
         for (int t = 1; t <= horizon; t++)
         {

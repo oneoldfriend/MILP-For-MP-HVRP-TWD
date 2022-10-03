@@ -5,7 +5,7 @@
 #include <math.h>
 
 #define M 100000
-#define RUNNING_HOURS 2
+#define RUNNING_HOURS 5
 
 ILOSTLBEGIN
 

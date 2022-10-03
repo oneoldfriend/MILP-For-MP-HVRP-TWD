@@ -1,4 +1,4 @@
-PARAMETER
+PARAM
 
 p,w,f,T
 

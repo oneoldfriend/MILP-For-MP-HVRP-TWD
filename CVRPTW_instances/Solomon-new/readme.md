@@ -2,21 +2,21 @@ PARAMETER
 
 p,w,f,T
 
-p: Profit per unit capacity from collection of on-call demands
+p: profit per unit capacity from collection of on-call demands
 
-w: Extra cost per outsourcing vehicle
+w: extra cost per outsourcing vehicle
 
-f: Overtime wages per unit time
+f: overtime wages per unit time
 
-T: Maximum work time
+T: maximum work time
 
 VEHICLE
 
 Q,c
 
-Q: Maximum capacity of vehicle
+Q: maximum capacity of vehicle
 
-c: Traveling cost per unit time of vehicle
+c: traveling cost per unit time of vehicle
 
 DEMANDS
 

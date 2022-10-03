@@ -450,25 +450,26 @@ int main(int argc, char **argv)
         env.out() << "Solution value  = " << cplex.getObjValue() << endl;
         file << instance_name << "," << -cplex.getObjValue() << std::endl;
         file.close();
+        ofstream detail_res("./detail_res/" + instance_name + ".txt", std::ios::out);
         // display the value of variable
         for (int t = 1; t <= horizon; t++)
         {
-            std::cout << t << " day's plan: ";
+            detail_res << t << " day's plan: ";
             for (int k = 0; k < vehicles_no; k++)
             {
-                std::cout << std::endl
-                          << "vehicle " << k << ": ";
+                detail_res << std::endl
+                           << "vehicle " << k << ": ";
                 for (int i = 0; i < nodes_no; i++)
                 {
                     if (i == 0)
                     {
-                        std::cout << i;
+                        detail_res << i;
                     }
                     for (int j = 0; j < nodes_no; j++)
                     {
                         if (cplex.getValue(x[t][k][i][j]) > 0.1)
                         {
-                            std::cout << " -> " << j;
+                            detail_res << " -> " << j;
                             if (j == 0)
                             {
                                 i = nodes_no;
@@ -482,7 +483,7 @@ int main(int argc, char **argv)
                     }
                 }
             }
-            std::cout << std::endl;
+            detail_res << std::endl;
         }
         // for (int i = 1; i < nodes_no; i++)
         // {
@@ -521,29 +522,30 @@ int main(int argc, char **argv)
         //     }
         // }
 
-        std::cout << "outsourced demands: ";
+        detail_res << "outsourced demands: ";
         for (int i = 0; i < nodes_no; i++)
         {
             if (cplex.getValue(u[i]) == 1)
             {
-                std::cout << i << " ";
+                detail_res << i << " ";
             }
         }
-        std::cout << std::endl;
+        detail_res << std::endl;
 
-        std::cout << "arrival time:";
+        detail_res << "arrival time:";
         for (int i = 0; i < nodes_no; i++)
         {
-            env.out() << cplex.getValue(at[i]) << " ";
+            detail_res << cplex.getValue(at[i]) << " ";
         }
+        detail_res << endl;
 
-        std::cout << "\ndeparture time:";
+        detail_res << "departure time:";
         for (int i = 0; i < nodes_no; i++)
         {
-            env.out() << cplex.getValue(dt[i]) << " ";
+            detail_res << cplex.getValue(dt[i]) << " ";
         }
 
-        cout << endl;
+        detail_res << endl;
     }
     catch (IloException &ex)
     {

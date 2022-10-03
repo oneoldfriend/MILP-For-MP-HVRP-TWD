@@ -76,7 +76,7 @@ double euclidean_distance_calc(double x1, double y1, double x2, double y2)
     return pow(pow(x1 - x2, 2) + pow(y1 - y2, 2), 0.5);
 }
 
-void read_instance(const IloEnv &env, const std::string &file_name, IloInt &nodes_no, IloInt &vehicles_no, IloInt &horizon, IloNumArray &r, IloNumArray &d, IloNumArray &e, IloNumArray &l, IloNumArray &m, IloNumArray &s, IloNumArray2 &tt, IloNumArray &Q, IloNumArray &c)
+void read_instance(const IloEnv &env, const std::string &file_name, IloInt &nodes_no, IloInt &vehicles_no, IloInt &horizon, IloNumArray &r, IloNumArray &d, IloNumArray &e, IloNumArray &l, IloNumArray &m, IloNumArray &s, IloNumArray2 &tt, IloNumArray &Q, IloNumArray &c, IloInt &p, IloInt &w, IloInt &f, IloInt &T_max)
 {
     ifstream file(file_name, std::ios::in);
     if (!file.is_open())
@@ -95,9 +95,25 @@ void read_instance(const IloEnv &env, const std::string &file_name, IloInt &node
         {
             mode = "vehicles";
         }
+        else if (std::strcmp(context, "PARAM") == 0)
+        {
+            mode = "parameters";
+        }
         else if (std::strcmp(context, "DEMANDS") == 0)
         {
             mode = "demands";
+        }
+        else if (mode == "parameters")
+        {
+            std::vector<std::string> attributes = str_split(context, ",");
+            if (attributes.size() < 1)
+            {
+                continue;
+            }
+            p = std::stoi(attributes[0]);
+            w = std::stoi(attributes[1]);
+            f = std::stoi(attributes[2]);
+            T_max = std::stoi(attributes[3]);
         }
         else if (mode == "vehicles")
         {
@@ -119,14 +135,14 @@ void read_instance(const IloEnv &env, const std::string &file_name, IloInt &node
                 continue;
             }
             Demand demand;
-            demand.x = std::stod(attributes[0]);
-            demand.y = std::stod(attributes[1]);
-            demand.e = std::stod(attributes[2]);
-            demand.l = std::stod(attributes[3]);
-            demand.r = std::stod(attributes[4]);
-            demand.d = std::stod(attributes[5]);
-            demand.m = std::stod(attributes[6]);
-            demand.s = std::stod(attributes[7]);
+            demand.x = std::stod(attributes[1]);
+            demand.y = std::stod(attributes[2]);
+            demand.e = std::stod(attributes[3]);
+            demand.l = std::stod(attributes[4]);
+            demand.r = std::stod(attributes[5]);
+            demand.d = std::stod(attributes[6]);
+            demand.m = std::stod(attributes[7]);
+            demand.s = std::stod(attributes[8]);
             demands.push_back(demand);
         }
     }
@@ -179,8 +195,8 @@ int main(int argc, char **argv)
     IloNumArray r, d, e, l, m, s, c, Q;
     IloNumArray2 tt;
     IloEnv env;
-    read_instance(env, argv[1], nodes_no, vehicles_no, horizon, r, d, e, l, m, s, tt, Q, c);
-    T_max = l[0];
+    read_instance(env, argv[1], nodes_no, vehicles_no, horizon, r, d, e, l, m, s, tt, Q, c, p, w, f, T_max);
+    std::cout << p << "," << w << "," << f << "," << T_max << std::endl;
     // for (int i = 0; i < nodes_no; i++)
     // {
     //     std::cout << i << " " << e[i] << " " << l[i] << " " << r[i] << " " << d[i] << " " << m[i] << " " << s[i] << std::endl;

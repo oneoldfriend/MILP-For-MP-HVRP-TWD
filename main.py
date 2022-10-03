@@ -63,7 +63,7 @@ def solomon_parser(file_name):
             elif mode == "customer":
                 line = line.strip(' \t\n')
                 line = " ".join(line.split()).split(" ")
-                if int(line[0]) is 0:
+                if int(line[0]) == 0:
                     t_max = line[5]
                 demands.append([line[1], line[2], line[4], line[5], 1, 1, line[3], line[6]])
     temp_file_name = file_name.split("/")[-1] + "__" + str(uuid.uuid4())

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 parallel_level=$1 # parallelism degree
-instances=($(ls -1 ./CVRPTW_instances/Solomon/*))
+instances=($(ls -1 ./instances/Solomon/*))
 num_instances=$(expr ${#instances[@]} - 1)
 cur_paralel=1
 

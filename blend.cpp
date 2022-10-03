@@ -450,7 +450,7 @@ int main(int argc, char **argv)
         env.out() << "Solution value  = " << cplex.getObjValue() << endl;
         file << instance_name << "," << -cplex.getObjValue() << std::endl;
         file.close();
-        ofstream detail_res("./detail_res/" + instance_name + ".txt", std::ios::out);
+        ofstream detail_res("./detail_res/" + instance_name, std::ios::out);
         // display the value of variable
         for (int t = 1; t <= horizon; t++)
         {

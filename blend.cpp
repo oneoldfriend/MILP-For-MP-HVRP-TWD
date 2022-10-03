@@ -437,7 +437,7 @@ int main(int argc, char **argv)
 
         // Optimize
         IloCplex cplex(model);
-        // Paremeter setting
+        // Parameter setting
         cplex.setParam(IloCplex::Param::MIP::Strategy::File, 3);
         cplex.setParam(IloCplex::Param::WorkDir, "./");
         std::string instance_name = str_split(argv[1], "__")[0];

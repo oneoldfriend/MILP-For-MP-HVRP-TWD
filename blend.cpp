@@ -458,13 +458,14 @@ int main(int argc, char **argv)
         cplex.setParam(IloCplex::Param::WorkDir, "./");
         std::string instance_name = str_split(argv[1], "__")[0];
         ofstream file("./results.txt", std::ios::app);
+        IloNum start_time = cplex.getCplexTime();
         // CallBack
-        cplex.use(timeIntervalCallback(env, cplex, file, cplex.getCplexTime(), instance_name));
+        cplex.use(timeIntervalCallback(env, cplex, file, start_time, instance_name));
         cplex.solve();
         // cplex.exportModel("best_route.lp");
         env.out() << "Solution status = " << cplex.getStatus() << endl;
         env.out() << "Solution value  = " << cplex.getObjValue() << endl;
-        file << instance_name << "," << -cplex.getObjValue() << std::endl;
+        file << instance_name << "," << -cplex.getObjValue() << "," << cplex.getCplexTime() - start_time << "," << cplex.getStatus() << std::endl;
         file.close();
         ofstream detail_res("./detail_res/" + instance_name, std::ios::out);
         // display the value of variable
